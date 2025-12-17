@@ -22,8 +22,8 @@ Madhu sir:
 - It is often referred to as Golang to avoid ambiguity and because of its former domain name, golang.org, but its proper name is Go.
 
 - Based on C
+
 - Code file -> main func -> entry point
-- `go.mod` is like `requirements.txt` -> tracks dependencies
 
 - Go doesn't require virtual environments like Python. Instead, it uses a single installation and manages dependencies at the project level.
 
@@ -32,6 +32,8 @@ Madhu sir:
   ```
 
   Creates a `go.mod`.
+
+  `go.mod` is like `requirements.txt` -> tracks dependencies
 
 - ```sh
   go run .
@@ -62,3 +64,7 @@ Madhu sir:
 - [Basic types](https://go.dev/tour/basics/11)
 
 - `if`, `for`: `()` for expression not required, but `{}` for block code required.
+
+- Static typing / type hints are added after the var name not before.
+
+- No try/except exists, intentionally, to make the code more robust, as you would need to think more on what could go wrong.

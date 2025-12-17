@@ -55,7 +55,7 @@ func main() {
 	// Infinite loop: https://go.dev/tour/flowcontrol/4
 
 	// `v` won't be available outside the `if` (but available in subsequent `else`s / `else if`s)
-	// Similar to recently added := in Python, but there, it's not local.
+	// Similar to recently added `:=` in Python, but there, it's not local.
 	if v := 10; v < 11 {
 		fmt.Println(v)
 	}
@@ -68,6 +68,7 @@ func main() {
 	// can use `_` in place of `i` if not required
 	// if only i is required, only i can be used, no need to do `i, _`
 
+	// Functions:
 	fmt.Println(add(2, 3))
 	fmt.Println(subtract(2, 3))
 
@@ -83,6 +84,7 @@ func main() {
 	fmt.Println("Min:", min)
 	fmt.Println("Max:", max)
 	fmt.Println("Sum:", sum)
+	fmt.Println(getStats([]int{}))
 
 	res2, err2 := divide2(10, 0)
 	if err2 == nil {
@@ -93,16 +95,16 @@ func main() {
 
 	// switch: Not like C, more similar to Python (match).
 	switch k := 1; k {
-	case 2:
+	case 1:
 		fmt.Println("C1")
-	case 3: // can also add a func call here, like: `case get_val():`
+	case 2: // can also add a func call here, like: `case getVal():`
 		fmt.Println("C2")
 	default:
 		fmt.Println("D", k)
 	}
 
 	// Switch without a condition is the same as `switch true`.
-	// Long if else chains? Use https://go.dev/tour/flowcontrol/11
+	// Long if else chains? Use it. https://go.dev/tour/flowcontrol/11
 
 	// Defer
 	testDefer()
@@ -117,18 +119,18 @@ func main() {
 	d1 := Detail{"SJ", 180}
 	d2 := Detail{initials: "SJ"} // other fields get "zero" (default) values
 	fmt.Println(d1, d1.initials, d2)
+	// (Go doesn't have classes. More on that later.)
 
-	arr := [5]int{1, 2, 3, 4, 5}
-	slice := []int{1, 2, 3} // this creates the same array as above, then builds a slice that references it
+	arr := [5]int{1, 2, 3, 4, 5}  // fixed sized
+	slice := []int{1, 2, 3} // this creates a dynamic array (arr with double space allocated), then builds a slice that references it
 	slice = append(slice, -1, -2)
 	// if the cap() is less than only new array would be allocated!
 	// https://go.dev/tour/moretypes/15
 	// (So, just like python list's internal working.)
 	fmt.Println(arr, slice, arr[1:3]) // arr[1:3] is also a slice
 
-	// Imp: Unlike Python, here, slices are references to array,
-	// so updating an element in slice updates that element in the original array.
-	// (They're the same.)
+	// Imp: Unlike Python, here, slices (doing x := arr[1:3]) are references to array (data not copied),
+	// so updating an element in slice updates that element in the original array. (as they're the same)
 	// https://go.dev/tour/moretypes/8
 
 	fmt.Println(len(slice), cap(slice)) // 5, 6 (guess why 6)
@@ -136,21 +138,26 @@ func main() {
 	// cap(slice): num of elements in the underlying arr, counting from the first element in the slice
 
 	// Creating a slice with make (https://go.dev/tour/moretypes/13)
-	z1 := make([]int, 5)
-	printSlice("z1", z1)
-	z2 := make([]int, 0, 5)
-	printSlice("z2", z2)
+	z1 := make([]int, 5) // len
+	printSlice("z1", z1) // z1 len=5 cap=5 [0 0 0 0 0]
+	z2 := make([]int, 0, 5) // len, cap
+	printSlice("z2", z2) // z2 len=0 cap=5 []
 	z3 := z2[:2]
-	printSlice("z3", z3)
+	printSlice("z3", z3) // z3 len=2 cap=5 [0 0]
 	z4 := z3[2:5]
-	printSlice("z4", z4)
+	printSlice("z4", z4) // z4 len=3 cap=3 [0 0 0]
 
 	// Maps
-	var hm0 map[string]int  // init with zero value of map
+
+	// var hm1 map[int]int = map[int]int{}
+	hm1 := map[int]int{} // or with type infer
+	fmt.Println(hm1)
+	hm1[1] = 100
+	fmt.Println(hm1)
+
+	var hm0 map[string]int // init with zero value of map
 	fmt.Println(hm0)
 	// hm0["z"] = 100 // error: zero val of map = nil, and nil map can't add keys
-	// Looks like a Go implementation problem.
-	// Solution? Use `make` function.
 	// https://go.dev/tour/moretypes/19
 
 	hm := map[string]int{"a": 1, "b": 2}
@@ -180,7 +187,7 @@ func subtract(x, y int) int {
 	return x - y
 }
 
-// return two vals: res, err
+// return two vals: res, err (popular convention)
 func divide(x, y float64) (float64, string) {
 	if y == 0 {
 		return 0, "division by zero"
@@ -191,7 +198,7 @@ func divide(x, y float64) (float64, string) {
 // named return vals
 func getStats(values []int) (min, max, sum int) {
 	if len(values) == 0 {
-		return 0, 0, 0
+		return // naked return: no need to return values explicitly (since vars are only init, would return zero-values)
 	}
 	min, max, sum = values[0], values[0], 0 // no initialization needed (`:=`)
 	for _, v := range values {
@@ -203,7 +210,7 @@ func getStats(values []int) (min, max, sum int) {
 		}
 		sum += v
 	}
-	return // naked return: no need to return explicitly
+	return // naked return: no need to return values explicitly
 }
 
 // Go's approach to error handling is different from Python's exceptions.
@@ -212,7 +219,7 @@ func divide2(x, y int) (int, error) {
 	if y == 0 {
 		return 0, errors.New("division by zero")
 	}
-	return x / y, nil
+	return x / y, nil // zero-value of an `error` is `nil`
 } // Apparently:
 // The focus on explicit error checking helps make Go code robust and readable.
 // It forces you to think about what should happen when something goes wrong.
@@ -229,7 +236,7 @@ func testDefer() {
 	// The deferred call's arguments are evaluated immediately,
 	// but the function call is not executed until the surrounding function returns.
 
-	// Side-note: Can use defer to print reverse counting like: https://go.dev/tour/flowcontrol/13
+	// Side-note: Can use defer to print reverse counting. https://go.dev/tour/flowcontrol/13
 }
 
 func printSlice(s string, x []int) {
