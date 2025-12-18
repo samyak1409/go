@@ -38,6 +38,7 @@ func main() {
 	for n := 0; n < 4; n++ {
 		fmt.Println("Count:", n)
 	}
+	// but modern way: `for n := range 4`
 
 	sum := 1
 	for sum < 1000 { // init and post statements are optional
@@ -122,8 +123,8 @@ func main() {
 	// (Go doesn't have classes. More on that later.)
 
 	arr := [5]int{1, 2, 3, 4, 5}  // fixed sized
-	slice := []int{1, 2, 3} // this creates a dynamic array (arr with double space allocated), then builds a slice that references it
-	slice = append(slice, -1, -2)
+	slice := []int{1, 2, 3} // this creates an array, then builds a slice that references it
+	slice = append(slice, -1, -2) // whenever we append, if the capacity is not there, then some extra space is allocated, and then data is appended
 	// if the cap() is less than only new array would be allocated!
 	// https://go.dev/tour/moretypes/15
 	// (So, just like python list's internal working.)
@@ -133,7 +134,7 @@ func main() {
 	// so updating an element in slice updates that element in the original array. (as they're the same)
 	// https://go.dev/tour/moretypes/8
 
-	fmt.Println(len(slice), cap(slice)) // 5, 6 (guess why 6)
+	fmt.Println(len(slice), cap(slice)) // 5, 6
 	// len(slice): num of elements it contains
 	// cap(slice): num of elements in the underlying arr, counting from the first element in the slice
 

@@ -1,4 +1,4 @@
-module learning
+module github.com/samyak1409/go
 
 go 1.25.5
 

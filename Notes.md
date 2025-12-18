@@ -31,15 +31,19 @@ Madhu sir:
   go mod init <module-path>
   ```
 
-  Creates a `go.mod`.
-
+  Creates a `go.mod`.  
   `go.mod` is like `requirements.txt` -> tracks dependencies
+
+  `<module-path>`: github.com/samyak1409/go  
+  Basically, location in a GitHub repo.
 
 - ```sh
   go run .
   ```
 
-- A package is a way to group functions, and it's made up of all the files in the same directory.
+- A package is a way to group functions, and it's made up of all the files in the same directory. A module is a collection of packages.
+
+- One package can only have one main function (even across multiple files in that package).
 
 - [Standard library](https://pkg.go.dev/std) packages
 
