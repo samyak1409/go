@@ -119,9 +119,10 @@ func main() {
 	// dynamic arr is used internally.
 
 	// Advanced topics:
-
 	structsAndInterfaces()
-
 	pointers()
+	goroutines()
+	channels()
+	generics()
 
 }

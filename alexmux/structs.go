@@ -13,7 +13,7 @@ type ice struct {
 
 type ev struct {
 	mileage uint8 // km per kwh
-	kwh  float32
+	kwh     float32
 }
 
 type vehicle interface {
@@ -54,7 +54,7 @@ func structsAndInterfaces() {
 	// So, now we would need to make one more `canGo` which could take type `ev`,
 	// even when we've the *SAME* `canGo` definition.
 	// There comes interface.
-	
+
 	canGo(ev{7, 79}, 500)
 }
 

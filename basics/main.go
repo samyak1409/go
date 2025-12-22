@@ -123,7 +123,7 @@ func main() {
 	// (Go doesn't have classes. More on that later.)
 
 	arr := [5]int{1, 2, 3, 4, 5}  // fixed sized
-	slice := []int{1, 2, 3} // this creates an array, then builds a slice that references it
+	slice := []int{1, 2, 3}       // this creates an array, then builds a slice that references it
 	slice = append(slice, -1, -2) // whenever we append, if the capacity is not there, then some extra space is allocated, and then data is appended
 	// if the cap() is less than only new array would be allocated!
 	// https://go.dev/tour/moretypes/15
@@ -139,10 +139,10 @@ func main() {
 	// cap(slice): num of elements in the underlying arr, counting from the first element in the slice
 
 	// Creating a slice with make (https://go.dev/tour/moretypes/13)
-	z1 := make([]int, 5) // len
-	printSlice("z1", z1) // z1 len=5 cap=5 [0 0 0 0 0]
+	z1 := make([]int, 5)    // len
+	printSlice("z1", z1)    // z1 len=5 cap=5 [0 0 0 0 0]
 	z2 := make([]int, 0, 5) // len, cap
-	printSlice("z2", z2) // z2 len=0 cap=5 []
+	printSlice("z2", z2)    // z2 len=0 cap=5 []
 	z3 := z2[:2]
 	printSlice("z3", z3) // z3 len=2 cap=5 [0 0]
 	z4 := z3[2:5]
